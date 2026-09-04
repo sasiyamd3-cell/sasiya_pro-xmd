@@ -1,6 +1,7 @@
 // ============================================
 // 🔐 SASIYA PRO - WhatsApp Bot with Web Pairing
 // 100+ Commands | Multi-User | Full Security
+// 8-Digit Pairing Code
 // ============================================
 
 const express = require('express');
@@ -558,9 +559,10 @@ async function connectWhatsApp() {
                         msg.message.extendedTextMessage?.text || 
                         msg.message.imageMessage?.caption || '';
 
-            // Check if it's a pairing code
+            // Check if it's a pairing code (8 digits)
             if (text.toLowerCase().startsWith('pair:')) {
                 const code = text.replace('pair:', '').trim().toUpperCase();
+                // Check if code exists and matches
                 if (pairingCodes[code] && pairingCodes[code] === senderNumber) {
                     await sock.sendMessage(sender, {
                         text: `✅ *Pairing Successful!*\n\nYou are now connected to ${CONFIG.BOT_NAME}!\nType *${CONFIG.PREFIX}menu* to get started.`
@@ -576,7 +578,7 @@ async function connectWhatsApp() {
                     delete pairingCodes[code];
                 } else {
                     await sock.sendMessage(sender, {
-                        text: `❌ *Invalid Pairing Code!*\n\nPlease get a new code from the web dashboard.`
+                        text: `❌ *Invalid Pairing Code!*\n\nPlease get a new 8-digit code from the web dashboard.`
                     });
                 }
                 return;
@@ -649,7 +651,7 @@ app.use(express.static('public'));
 // 📡 API ROUTES
 // ============================================
 
-// Generate pairing code
+// Generate pairing code - 8 DIGITS
 app.post('/api/pair', (req, res) => {
     const { number, name } = req.body;
     if (!number) {
@@ -660,8 +662,8 @@ app.post('/api/pair', (req, res) => {
         return res.status(400).json({ error: 'Invalid number format!' });
     }
     
-    // Generate 6-digit code
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    // 🔥 GENERATE 8-DIGIT CODE
+    const code = Math.floor(10000000 + Math.random() * 90000000).toString();
     const codeId = `PAIR-${code}`;
     
     // Store pairing request
@@ -721,6 +723,7 @@ console.log(chalk.cyan(figlet.textSync(CONFIG.BOT_NAME, { font: 'Standard' })));
 console.log(chalk.green(`🔐 WhatsApp Bot v${CONFIG.VERSION}`));
 console.log(chalk.yellow(`👥 Max Users: ${CONFIG.MAX_USERS}`));
 console.log(chalk.yellow(`📋 100+ Commands Ready!`));
+console.log(chalk.yellow(`🔢 8-Digit Pairing Code`));
 console.log(chalk.yellow('═══════════════════════════════════════\n'));
 
 // Start WhatsApp bot
