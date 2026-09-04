@@ -1,21 +1,21 @@
 {
-  "name": "sasiya-pro",
+  "name": "sasiya-ai-bot",
   "version": "2.0.0",
-  "description": "WhatsApp Bot with Web Pairing - 100+ Commands",
+  "description": "AI WhatsApp Bot with QR + Pairing Code",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "^6.6.0",
-    "qrcode-terminal": "^0.12.0",
+    "pino": "^8.17.2",
+    "qrcode": "^1.5.3",
+    "groq-sdk": "^0.5.0",
     "express": "^4.18.2",
-    "dotenv": "^16.3.1",
     "cors": "^2.8.5",
-    "moment-timezone": "^0.5.43",
-    "chalk": "^4.1.2",
-    "figlet": "^1.7.0",
-    "clear": "^0.1.0",
-    "axios": "^1.6.0"
+    "chalk": "^5.3.0",
+    "figlet": "^1.7.0"
   }
 }
