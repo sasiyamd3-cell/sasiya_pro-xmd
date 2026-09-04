@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SASIYA PRO - Pair & Connect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+        
+        .header p {
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-item .label {
+            color: #888;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-item .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+        
+        .status-item .value.online {
+            color: #4CAF50;
+        }
+        
+        .status-item .value.offline {
+            color: #f44336;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .card h3 {
+            color: #ffd200;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .card p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd200;
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(247, 151, 30, 0.3);
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+        }
+        
+        .toast {
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .toast.success {
+            display: block;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .toast.error {
+            display: block;
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+        
+        .toast.info {
+            display: block;
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196F3;
+            color: #2196F3;
+        }
+        
+        .code-display {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 0;
+            border: 1px dashed rgba(255, 215, 0, 0.3);
+        }
+        
+        .code-display .code {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd200;
+            letter-spacing: 3px;
+            font-family: monospace;
+        }
+        
+        .code-display .label {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+        
+        .instructions {
+            background: rgba(76, 175, 80, 0.05);
+            border-left: 3px solid #4CAF50;
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.8;
+        }
+        
+        .user-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .user-item .name {
+            font-weight: 600;
+        }
+        
+        .user-item .number {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        
+        .user-item .badge {
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .user-item .badge.inactive {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .status-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 SASIYA PRO</h1>
+            <p>WhatsApp Bot - Pair & Connect</p>
+        </div>
+
+        <!-- Status -->
+        <div class="status-bar" id="statusBar">
+            <div class="status-item">
+                <div class="label">Bot</div>
+                <div class="value" id="botStatus">⏳</div>
+            </div>
+            <div class="status-item">
+                <div class="label">Users</div>
+                <div class="value" id="userCount">0/100</div>
+            </div>
+            <div class="status-item">
+                <div class="label">Active</div>
+                <div class="value" id="activeCount">0</div>
+            </div>
+            <div class="status-item">
+                <div class="label">Messages</div>
+                <div class="value" id="msgCount">0</div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
+
+        <!-- Pairing Card -->
+        <div class="card">
+            <h3>📱 Connect Your WhatsApp</h3>
+            <p>Enter your WhatsApp number to get a pairing code.</p>
+            
+            <div class="form-group">
+                <label>WhatsApp Number</label>
+                <input type="text" id="phoneNumber" placeholder="94771234567">
+            </div>
+            <div class="form-group">
+                <label>Your Name (Optional)</label>
+                <input type="text" id="userName" placeholder="Your Name">
+            </div>
+            
+            <button class="btn" onclick="pairDevice()">🔗 Get Pairing Code</button>
+            
+            <div id="pairResult" style="display: none; margin-top: 15px;">
+                <div class="code-display">
+                    <div class="label">YOUR PAIRING CODE</div>
+                    <div class="code" id="pairCode">PAIR-123456</div>
+                </div>
+                <div class="instructions">
+                    <strong>📌 Instructions:</strong><br>
+                    1. Open WhatsApp on your phone<br>
+                    2. Send this code to the bot:<br>
+                    <code style="background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;" id="codeMessage">pair:PAIR-123456</code><br>
+                    3. Bot will link your account instantly!
+                </div>
+            </div>
+        </div>
+
+        <!-- Users List -->
+        <div class="card">
+            <h3>👥 Registered Users</h3>
+            <div id="userList" class="user-list">
+                <p style="color: #666;">No users yet.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="loadUsers()" style="margin-top: 15px;">
+                🔄 Refresh
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+
+        window.onload = function() {
+            loadStatus();
+            loadUsers();
+            setInterval(loadStatus, 5000);
+        };
+
+        async function loadStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                
+                const statusEl = document.getElementById('botStatus');
+                statusEl.textContent = data.status === 'online' ? '✅' : '❌';
+                statusEl.className = 'value ' + data.status;
+                
+                document.getElementById('userCount').textContent = `${data.users}/${data.maxUsers}`;
+                document.getElementById('activeCount').textContent = data.activeUsers;
+                document.getElementById('msgCount').textContent = data.messages;
+            } catch (e) {}
+        }
+
+        async function loadUsers() {
+            try {
+                const res = await fetch('/api/users');
+                const users = await res.json();
+                const container = document.getElementById('userList');
+                
+                if (users.length === 0) {
+                    container.innerHTML = '<p style="color: #666;">No users registered yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = users.map(u => `
+                    <div class="user-item">
+                        <div>
+                            <span class="name">${u.name || 'User'}</span>
+                            <span class="number">${u.number}</span>
+                        </div>
+                        <span class="badge ${u.isActive ? '' : 'inactive'}">${u.isActive ? '✅' : '❌'}</span>
+                    </div>
+                `).join('');
+            } catch (e) {}
+        }
+
+        async function pairDevice() {
+            const number = document.getElementById('phoneNumber').value.trim();
+            const name = document.getElementById('userName').value.trim() || 'User';
+            
+            if (!number) {
+                showToast('Please enter your WhatsApp number!', 'error');
+                return;
+            }
+            
+            if (!/^[0-9]{10,15}$/.test(number)) {
+                showToast('Invalid number! Only digits, 10-15 digits.', 'error');
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/pair', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ number, name })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    // Show pairing code
+                    document.getElementById('pairResult').style.display = 'block';
+                    document.getElementById('pairCode').textContent = data.code;
+                    document.getElementById('codeMessage').textContent = `pair:${data.code}`;
+                    
+                    showToast(`✅ Pairing code generated! Send it in WhatsApp.`, 'success');
+                    loadUsers();
+                    loadStatus();
+                    
+                    // Clear form
+                    document.getElementById('phoneNumber').value = '';
+                } else {
+                    showToast('❌ ' + data.error, 'error');
+                }
+            } catch (e) {
+                showToast('❌ Error connecting. Please try again.', 'error');
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            setTimeout(() => { toast.className = 'toast'; }, 6000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') pairDevice();
+        });
+    </script>
+</body>
+</html>
