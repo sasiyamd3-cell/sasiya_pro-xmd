@@ -51,6 +51,17 @@
             margin-top: 5px;
         }
         
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd200;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
         .status-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -195,23 +206,110 @@
         }
         
         .code-display {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
-            margin: 10px 0;
-            border: 1px dashed rgba(255, 215, 0, 0.3);
+            margin: 15px 0;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+            position: relative;
+            overflow: hidden;
         }
         
-        .code-display .code {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffd200;
-            letter-spacing: 3px;
-            font-family: monospace;
+        .code-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 215, 0, 0.05), transparent, rgba(255, 215, 0, 0.05), transparent);
+            animation: rotate 8s linear infinite;
+        }
+        
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
         }
         
         .code-display .label {
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .code-display .code {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ffd200;
+            letter-spacing: 6px;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .code-display .code span {
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .code-display .digits-info {
+            color: #666;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .code-display .digits-info strong {
+            color: #ffd200;
+        }
+        
+        .code-display .expiry {
+            color: #f44336;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .code-status {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .code-status .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .code-status .dot.active {
+            background: #4CAF50;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .code-status .status-item {
             color: #aaa;
             font-size: 0.8rem;
         }
@@ -219,12 +317,40 @@
         .instructions {
             background: rgba(76, 175, 80, 0.05);
             border-left: 3px solid #4CAF50;
-            padding: 12px 15px;
+            padding: 15px 20px;
             border-radius: 5px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #ccc;
+            line-height: 2.2;
+        }
+        
+        .instructions code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: #ffd200;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .btn-copy {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
             margin-top: 10px;
-            font-size: 0.85rem;
-            color: #aaa;
-            line-height: 1.8;
+        }
+        
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffd200;
         }
         
         .user-list {
@@ -265,6 +391,28 @@
             color: #f44336;
         }
         
+        .pair-status {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        
+        .pair-status .method {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+        
+        .pair-status .method.active {
+            color: #4CAF50;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -275,6 +423,10 @@
             .status-bar {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .code-display .code {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
         }
     </style>
 </head>
@@ -283,6 +435,7 @@
         <div class="header">
             <h1>🔐 SASIYA PRO</h1>
             <p>WhatsApp Bot - Pair & Connect</p>
+            <span class="badge">🔢 8-Digit Pairing Code</span>
         </div>
 
         <!-- Status -->
@@ -311,7 +464,7 @@
         <!-- Pairing Card -->
         <div class="card">
             <h3>📱 Connect Your WhatsApp</h3>
-            <p>Enter your WhatsApp number to get a pairing code.</p>
+            <p>Enter your WhatsApp number to get an <strong style="color:#ffd200;">8-digit</strong> pairing code.</p>
             
             <div class="form-group">
                 <label>WhatsApp Number</label>
@@ -322,20 +475,40 @@
                 <input type="text" id="userName" placeholder="Your Name">
             </div>
             
-            <button class="btn" onclick="pairDevice()">🔗 Get Pairing Code</button>
+            <button class="btn" onclick="pairDevice()">🔗 Get 8-Digit Pairing Code</button>
             
             <div id="pairResult" style="display: none; margin-top: 15px;">
+                <!-- 8 DIGIT CODE DISPLAY -->
                 <div class="code-display">
-                    <div class="label">YOUR PAIRING CODE</div>
-                    <div class="code" id="pairCode">PAIR-123456</div>
+                    <div class="label">🔐 YOUR PAIRING CODE</div>
+                    <div class="code">
+                        <span id="pairCode">PAIR-12345678</span>
+                    </div>
+                    <div class="digits-info"><strong>8</strong> digit code</div>
+                    <div class="expiry">⏱️ Expires in 5 minutes</div>
+                    <div class="code-status">
+                        <span class="status-item"><span class="dot active"></span> Active</span>
+                        <span class="status-item">📱 8 Digits</span>
+                    </div>
                 </div>
+                
                 <div class="instructions">
-                    <strong>📌 Instructions:</strong><br>
-                    1. Open WhatsApp on your phone<br>
-                    2. Send this code to the bot:<br>
-                    <code style="background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;" id="codeMessage">pair:PAIR-123456</code><br>
-                    3. Bot will link your account instantly!
+                    <strong>📌 How to Link:</strong><br>
+                    1️⃣ Open WhatsApp on your phone<br>
+                    2️⃣ Send this <strong>8-digit</strong> code to the bot:<br>
+                    <code id="codeMessage">pair:PAIR-12345678</code><br>
+                    3️⃣ Bot will link your account instantly! ✅
                 </div>
+                
+                <div class="pair-status">
+                    <span class="method active">✅ WhatsApp Web</span>
+                    <span class="method">📱 Baileys</span>
+                    <span class="method">🔢 8-Digit Code</span>
+                </div>
+                
+                <button class="btn-copy" onclick="copyCode()">
+                    📋 Copy Code
+                </button>
             </div>
         </div>
 
@@ -353,6 +526,7 @@
 
     <script>
         const API_URL = window.location.origin;
+        let currentCode = '';
 
         window.onload = function() {
             loadStatus();
@@ -422,12 +596,14 @@
                 const data = await res.json();
                 
                 if (data.success) {
+                    currentCode = data.code;
+                    
                     // Show pairing code
                     document.getElementById('pairResult').style.display = 'block';
                     document.getElementById('pairCode').textContent = data.code;
                     document.getElementById('codeMessage').textContent = `pair:${data.code}`;
                     
-                    showToast(`✅ Pairing code generated! Send it in WhatsApp.`, 'success');
+                    showToast(`✅ 8-digit pairing code generated! Send it in WhatsApp.`, 'success');
                     loadUsers();
                     loadStatus();
                     
@@ -439,6 +615,37 @@
             } catch (e) {
                 showToast('❌ Error connecting. Please try again.', 'error');
             }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('pairCode').textContent;
+            const text = `pair:${code}`;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('📋 Code copied to clipboard!', 'success');
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('📋 Code copied!', 'success');
+            } catch (e) {
+                showToast('❌ Failed to copy. Please copy manually.', 'error');
+            }
+            document.body.removeChild(textarea);
         }
 
         function showToast(message, type) {
