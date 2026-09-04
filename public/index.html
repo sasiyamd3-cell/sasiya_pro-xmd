@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SASIYA PRO - Pair & Connect</title>
+    <title>SASIYA AI - QR & Pairing Code</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
         }
         
         .container {
-            max-width: 700px;
+            max-width: 800px;
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -40,7 +40,7 @@
         
         .header h1 {
             font-size: 2.8rem;
-            background: linear-gradient(90deg, #f7971e, #ffd200);
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
@@ -51,20 +51,9 @@
             margin-top: 5px;
         }
         
-        .header .badge {
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd200;
-            padding: 4px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 8px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-        
         .status-bar {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 25px;
             padding: 15px;
@@ -106,52 +95,99 @@
         }
         
         .card h3 {
-            color: #ffd200;
+            color: #00d2ff;
             margin-bottom: 15px;
             font-size: 1.2rem;
         }
         
-        .card p {
-            color: #aaa;
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            min-height: 250px;
+        }
+        
+        .qr-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .qr-container .placeholder {
+            color: #666;
+            text-align: center;
+        }
+        
+        .pairing-code {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 210, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 210, 255, 0.2);
+        }
+        
+        .pairing-code .code {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #00d2ff;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
+        }
+        
+        .pairing-code .expiry {
+            color: #f44336;
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-top: 10px;
         }
         
-        .form-group {
-            margin-bottom: 12px;
+        .pairing-code .status {
+            color: #4CAF50;
+            font-size: 0.9rem;
+            margin-top: 5px;
         }
         
-        .form-group label {
-            display: block;
-            color: #ccc;
+        .methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .method-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .method-card .icon {
+            font-size: 2rem;
             margin-bottom: 5px;
+        }
+        
+        .method-card .title {
+            color: #aaa;
             font-size: 0.85rem;
         }
         
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #ffd200;
-            background: rgba(255, 255, 255, 0.12);
+        .method-card .desc {
+            color: #666;
+            font-size: 0.75rem;
+            margin-top: 5px;
         }
         
         .btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(90deg, #f7971e, #ffd200);
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
             border: none;
             border-radius: 10px;
-            color: #000;
+            color: #fff;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
@@ -160,21 +196,15 @@
         
         .btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 5px 20px rgba(247, 151, 30, 0.3);
-        }
-        
-        .btn:active {
-            transform: scale(0.98);
+            box-shadow: 0 5px 20px rgba(0, 210, 255, 0.3);
         }
         
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
-            color: #fff;
         }
         
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.2);
-            box-shadow: none;
         }
         
         .toast {
@@ -198,221 +228,6 @@
             color: #f44336;
         }
         
-        .toast.info {
-            display: block;
-            background: rgba(33, 150, 243, 0.2);
-            border: 1px solid #2196F3;
-            color: #2196F3;
-        }
-        
-        .code-display {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 15px 0;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .code-display::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 215, 0, 0.05), transparent, rgba(255, 215, 0, 0.05), transparent);
-            animation: rotate 8s linear infinite;
-        }
-        
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
-        }
-        
-        .code-display .label {
-            color: #888;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .code-display .code {
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: #ffd200;
-            letter-spacing: 6px;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            margin: 10px 0;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .code-display .code span {
-            display: inline-block;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-        
-        .code-display .digits-info {
-            color: #666;
-            font-size: 0.75rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .code-display .digits-info strong {
-            color: #ffd200;
-        }
-        
-        .code-display .expiry {
-            color: #f44336;
-            font-size: 0.75rem;
-            margin-top: 8px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .code-status {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .code-status .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-        
-        .code-status .dot.active {
-            background: #4CAF50;
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        .code-status .status-item {
-            color: #aaa;
-            font-size: 0.8rem;
-        }
-        
-        .instructions {
-            background: rgba(76, 175, 80, 0.05);
-            border-left: 3px solid #4CAF50;
-            padding: 15px 20px;
-            border-radius: 5px;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: #ccc;
-            line-height: 2.2;
-        }
-        
-        .instructions code {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 4px 14px;
-            border-radius: 6px;
-            font-size: 1rem;
-            color: #ffd200;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .btn-copy {
-            width: 100%;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-        
-        .btn-copy:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #ffd200;
-        }
-        
-        .user-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .user-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .user-item .name {
-            font-weight: 600;
-        }
-        
-        .user-item .number {
-            color: #888;
-            font-size: 0.8rem;
-        }
-        
-        .user-item .badge {
-            font-size: 0.7rem;
-            padding: 2px 10px;
-            border-radius: 20px;
-            background: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-        
-        .user-item .badge.inactive {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
-        }
-        
-        .pair-status {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-        }
-        
-        .pair-status .method {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #888;
-            font-size: 0.8rem;
-        }
-        
-        .pair-status .method.active {
-            color: #4CAF50;
-        }
-        
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -420,11 +235,11 @@
             .header h1 {
                 font-size: 2rem;
             }
-            .status-bar {
-                grid-template-columns: repeat(2, 1fr);
+            .methods {
+                grid-template-columns: 1fr;
             }
-            .code-display .code {
-                font-size: 2rem;
+            .pairing-code .code {
+                font-size: 2.5rem;
                 letter-spacing: 4px;
             }
         }
@@ -433,9 +248,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔐 SASIYA PRO</h1>
-            <p>WhatsApp Bot - Pair & Connect</p>
-            <span class="badge">🔢 8-Digit Pairing Code</span>
+            <h1>🤖 SASIYA AI</h1>
+            <p>WhatsApp Bot - QR Code + Pairing Code</p>
         </div>
 
         <!-- Status -->
@@ -445,219 +259,167 @@
                 <div class="value" id="botStatus">⏳</div>
             </div>
             <div class="status-item">
-                <div class="label">Users</div>
-                <div class="value" id="userCount">0/100</div>
+                <div class="label">Pairing Code</div>
+                <div class="value" id="pairStatus">⏳</div>
             </div>
             <div class="status-item">
-                <div class="label">Active</div>
-                <div class="value" id="activeCount">0</div>
-            </div>
-            <div class="status-item">
-                <div class="label">Messages</div>
-                <div class="value" id="msgCount">0</div>
+                <div class="label">Time Left</div>
+                <div class="value" id="timeLeft">0s</div>
             </div>
         </div>
 
         <!-- Toast -->
         <div id="toast" class="toast"></div>
 
-        <!-- Pairing Card -->
+        <!-- QR Code Card -->
         <div class="card">
-            <h3>📱 Connect Your WhatsApp</h3>
-            <p>Enter your WhatsApp number to get an <strong style="color:#ffd200;">8-digit</strong> pairing code.</p>
-            
-            <div class="form-group">
-                <label>WhatsApp Number</label>
-                <input type="text" id="phoneNumber" placeholder="94771234567">
-            </div>
-            <div class="form-group">
-                <label>Your Name (Optional)</label>
-                <input type="text" id="userName" placeholder="Your Name">
-            </div>
-            
-            <button class="btn" onclick="pairDevice()">🔗 Get 8-Digit Pairing Code</button>
-            
-            <div id="pairResult" style="display: none; margin-top: 15px;">
-                <!-- 8 DIGIT CODE DISPLAY -->
-                <div class="code-display">
-                    <div class="label">🔐 YOUR PAIRING CODE</div>
-                    <div class="code">
-                        <span id="pairCode">PAIR-12345678</span>
-                    </div>
-                    <div class="digits-info"><strong>8</strong> digit code</div>
-                    <div class="expiry">⏱️ Expires in 5 minutes</div>
-                    <div class="code-status">
-                        <span class="status-item"><span class="dot active"></span> Active</span>
-                        <span class="status-item">📱 8 Digits</span>
-                    </div>
+            <h3>📱 Scan QR Code</h3>
+            <div class="qr-container" id="qrContainer">
+                <div class="placeholder">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                    <p>Loading QR Code...</p>
+                    <p style="font-size: 0.8rem; color: #444;">Or use Pairing Code below</p>
                 </div>
-                
-                <div class="instructions">
-                    <strong>📌 How to Link:</strong><br>
-                    1️⃣ Open WhatsApp on your phone<br>
-                    2️⃣ Send this <strong>8-digit</strong> code to the bot:<br>
-                    <code id="codeMessage">pair:PAIR-12345678</code><br>
-                    3️⃣ Bot will link your account instantly! ✅
-                </div>
-                
-                <div class="pair-status">
-                    <span class="method active">✅ WhatsApp Web</span>
-                    <span class="method">📱 Baileys</span>
-                    <span class="method">🔢 8-Digit Code</span>
-                </div>
-                
-                <button class="btn-copy" onclick="copyCode()">
-                    📋 Copy Code
-                </button>
             </div>
         </div>
 
-        <!-- Users List -->
+        <!-- Pairing Code Card -->
         <div class="card">
-            <h3>👥 Registered Users</h3>
-            <div id="userList" class="user-list">
-                <p style="color: #666;">No users yet.</p>
+            <h3>🔢 Pairing Code (2 Minutes)</h3>
+            <div class="pairing-code" id="pairingContainer">
+                <div class="code" id="pairCode">------</div>
+                <div class="status" id="pairStatusText">⏳ Waiting for code...</div>
+                <div class="expiry" id="expiryText">⏱️ Expires in: --</div>
             </div>
-            <button class="btn btn-secondary" onclick="loadUsers()" style="margin-top: 15px;">
-                🔄 Refresh
-            </button>
         </div>
+
+        <!-- Methods -->
+        <div class="card">
+            <h3>📌 Connect Methods</h3>
+            <div class="methods">
+                <div class="method-card">
+                    <div class="icon">📱</div>
+                    <div class="title">QR Code</div>
+                    <div class="desc">Scan with WhatsApp</div>
+                </div>
+                <div class="method-card">
+                    <div class="icon">🔢</div>
+                    <div class="title">Pairing Code</div>
+                    <div class="desc">8-digit code (2 min)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Refresh Button -->
+        <button class="btn" onclick="refreshData()">🔄 Refresh</button>
+        <button class="btn btn-secondary" onclick="generateNewPair()" style="margin-top: 10px;">
+            🔢 Generate New Pairing Code
+        </button>
     </div>
 
     <script>
-        const API_URL = window.location.origin;
-        let currentCode = '';
+        let refreshInterval;
+        let countdownInterval;
 
         window.onload = function() {
-            loadStatus();
-            loadUsers();
-            setInterval(loadStatus, 5000);
+            refreshData();
+            refreshInterval = setInterval(refreshData, 5000);
         };
 
-        async function loadStatus() {
+        async function refreshData() {
             try {
-                const res = await fetch('/api/status');
+                const res = await fetch('/api/qr');
                 const data = await res.json();
                 
+                // Update status
                 const statusEl = document.getElementById('botStatus');
-                statusEl.textContent = data.status === 'online' ? '✅' : '❌';
-                statusEl.className = 'value ' + data.status;
+                statusEl.textContent = data.isConnected ? '✅ Online' : '❌ Offline';
+                statusEl.className = 'value ' + (data.isConnected ? 'online' : 'offline');
                 
-                document.getElementById('userCount').textContent = `${data.users}/${data.maxUsers}`;
-                document.getElementById('activeCount').textContent = data.activeUsers;
-                document.getElementById('msgCount').textContent = data.messages;
-            } catch (e) {}
-        }
-
-        async function loadUsers() {
-            try {
-                const res = await fetch('/api/users');
-                const users = await res.json();
-                const container = document.getElementById('userList');
-                
-                if (users.length === 0) {
-                    container.innerHTML = '<p style="color: #666;">No users registered yet.</p>';
-                    return;
+                // Update QR Code
+                const qrContainer = document.getElementById('qrContainer');
+                if (data.qr) {
+                    qrContainer.innerHTML = `<img src="${data.qr}" alt="QR Code">`;
+                } else {
+                    qrContainer.innerHTML = `
+                        <div class="placeholder">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                            <p>${data.isConnected ? '✅ Already Connected!' : 'No QR Code Available'}</p>
+                            <p style="font-size: 0.8rem; color: #444;">Try refreshing or use pairing code</p>
+                        </div>
+                    `;
                 }
                 
-                container.innerHTML = users.map(u => `
-                    <div class="user-item">
-                        <div>
-                            <span class="name">${u.name || 'User'}</span>
-                            <span class="number">${u.number}</span>
-                        </div>
-                        <span class="badge ${u.isActive ? '' : 'inactive'}">${u.isActive ? '✅' : '❌'}</span>
-                    </div>
-                `).join('');
-            } catch (e) {}
+                // Update Pairing Code
+                const pairCodeEl = document.getElementById('pairCode');
+                const pairStatusEl = document.getElementById('pairStatusText');
+                const expiryEl = document.getElementById('expiryText');
+                
+                if (data.pairingCode) {
+                    pairCodeEl.textContent = data.pairingCode;
+                    pairStatusEl.textContent = '✅ Active';
+                    pairStatusEl.style.color = '#4CAF50';
+                    
+                    // Update expiry countdown
+                    const timeLeft = document.getElementById('timeLeft');
+                    if (data.timeRemaining > 0) {
+                        timeLeft.textContent = data.timeRemaining + 's';
+                        expiryEl.textContent = `⏱️ Expires in: ${data.timeRemaining}s`;
+                        
+                        // Start countdown
+                        clearInterval(countdownInterval);
+                        let remaining = data.timeRemaining;
+                        countdownInterval = setInterval(() => {
+                            remaining--;
+                            if (remaining <= 0) {
+                                clearInterval(countdownInterval);
+                                expiryEl.textContent = '⏰ Expired!';
+                                pairStatusEl.textContent = '❌ Expired';
+                                pairStatusEl.style.color = '#f44336';
+                                timeLeft.textContent = '0s';
+                            } else {
+                                timeLeft.textContent = remaining + 's';
+                                expiryEl.textContent = `⏱️ Expires in: ${remaining}s`;
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    pairCodeEl.textContent = '------';
+                    pairStatusEl.textContent = '⏳ No code available';
+                    pairStatusEl.style.color = '#888';
+                    expiryEl.textContent = '⏱️ Generate new code';
+                    document.getElementById('timeLeft').textContent = '0s';
+                }
+            } catch (e) {
+                console.error('Error:', e);
+            }
         }
 
-        async function pairDevice() {
-            const number = document.getElementById('phoneNumber').value.trim();
-            const name = document.getElementById('userName').value.trim() || 'User';
-            
-            if (!number) {
-                showToast('Please enter your WhatsApp number!', 'error');
-                return;
-            }
-            
-            if (!/^[0-9]{10,15}$/.test(number)) {
-                showToast('Invalid number! Only digits, 10-15 digits.', 'error');
-                return;
-            }
-            
+        async function generateNewPair() {
             try {
-                const res = await fetch('/api/pair', {
+                const res = await fetch('/api/generate-pair', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ number, name })
+                    headers: { 'Content-Type': 'application/json' }
                 });
-                
                 const data = await res.json();
                 
                 if (data.success) {
-                    currentCode = data.code;
-                    
-                    // Show pairing code
-                    document.getElementById('pairResult').style.display = 'block';
-                    document.getElementById('pairCode').textContent = data.code;
-                    document.getElementById('codeMessage').textContent = `pair:${data.code}`;
-                    
-                    showToast(`✅ 8-digit pairing code generated! Send it in WhatsApp.`, 'success');
-                    loadUsers();
-                    loadStatus();
-                    
-                    // Clear form
-                    document.getElementById('phoneNumber').value = '';
+                    showToast('✅ New Pairing Code Generated!', 'success');
+                    refreshData();
                 } else {
                     showToast('❌ ' + data.error, 'error');
                 }
             } catch (e) {
-                showToast('❌ Error connecting. Please try again.', 'error');
+                showToast('❌ Error generating code', 'error');
             }
-        }
-
-        function copyCode() {
-            const code = document.getElementById('pairCode').textContent;
-            const text = `pair:${code}`;
-            
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('📋 Code copied to clipboard!', 'success');
-                }).catch(() => {
-                    fallbackCopy(text);
-                });
-            } else {
-                fallbackCopy(text);
-            }
-        }
-
-        function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showToast('📋 Code copied!', 'success');
-            } catch (e) {
-                showToast('❌ Failed to copy. Please copy manually.', 'error');
-            }
-            document.body.removeChild(textarea);
         }
 
         function showToast(message, type) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.className = 'toast ' + type;
-            setTimeout(() => { toast.className = 'toast'; }, 6000);
+            setTimeout(() => { toast.className = 'toast'; }, 5000);
         }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') pairDevice();
-        });
     </script>
 </body>
 </html>
